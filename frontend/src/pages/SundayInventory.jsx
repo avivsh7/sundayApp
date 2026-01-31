@@ -56,7 +56,7 @@ function SundayInventory() {
         setTimeout(() => setSuccessMsg(false), 3000);
       }
     } catch (err) {
-      setError("Failed to connect to the backend server.");
+      setError("Failed to connect to the backend server");
     } finally {
       setLoading(false);
     }
