@@ -1,0 +1,40 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: etherealpods.sunday.com
+spec:
+  group: sunday.com
+  scope: Namespaced
+  names:
+    plural: etherealpods
+    singular: etherealpod
+    kind: EtherealPod
+    shortNames:
+      - eps
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: Restarts
+          type: integer
+          jsonPath: .status.restarts
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                image:
+                  type: string
+            status:
+              type: object
+              properties:
+                restarts:
+                  type: integer
