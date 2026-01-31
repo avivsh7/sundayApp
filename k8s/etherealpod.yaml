@@ -1,7 +1,0 @@
-apiVersion: sunday.com/v1
-kind: EtherealPod
-metadata:
-  name: ethereal-pod
-  namespace: sunday-app
-spec:
-  image: "sunday-backend:v1.2"
