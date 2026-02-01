@@ -30,7 +30,7 @@ function SundayInventory() {
 
     checkDbHealth();
     const interval = setInterval(checkDbHealth, 5000);
-    
+
     return () => clearInterval(interval);
   }, []);
 

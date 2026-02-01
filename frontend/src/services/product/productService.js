@@ -8,13 +8,13 @@ export const productService = {
     const response = await axios.get(`${BASE_URL}/getAll`);
     return response.data;
   },
-  
-getAmountByName: async (name) => {
+
+  getAmountByName: async (name) => {
     const encodedName = encodeURIComponent(name);
     const response = await axios.get(`${BASE_URL}/get_product_amount/${encodedName}`);
     return response.data;
   },
-  
+
   createProduct: async (productData) => {
     const response = await axios.post(`${BASE_URL}/write`, productData);
     return response.data;
