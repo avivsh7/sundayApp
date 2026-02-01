@@ -119,3 +119,25 @@ metadata:
   namespace: sunday-app
 spec:
   image: "sunday-backend:v1.5"
+---
+apiVersion: sunday.com/v1
+kind: EtherealPod
+metadata:
+  name: frontend-ep 
+  namespace: sunday-app
+spec:
+  image: "sunday-frontend:v1.0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  namespace: sunday-app
+spec:
+  type: NodePort
+  selector:
+    managed-by: frontend-ep 
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30002

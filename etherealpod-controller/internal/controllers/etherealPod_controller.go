@@ -58,7 +58,7 @@ func (r *EtherealPodReconciler) buildPod(ep *v1.EtherealPod) *corev1.Pod {
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      ep.Name,
 			Namespace: ep.Namespace,
-			Labels:    map[string]string{"app": "ethereal-backend", "managed-by": ep.Name},
+			Labels:    map[string]string{"app": ep.Name, "managed-by": ep.Name},
 			OwnerReferences: []metav1.OwnerReference{
 				*metav1.NewControllerRef(ep, v1.GroupVersion.WithKind("EtherealPod")),
 			},
