@@ -4,6 +4,7 @@ A cloud-native inventory management system using a Custom Kubernetes Operator to
 How to Run
 Prerequisites:
 Docker Desktop with Kubernetes enabled.
+Start a cluster.
 
 Go (for the controller).
 
