@@ -39,6 +39,51 @@ spec:
                 restarts:
                   type: integer
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: etherealpod-controller-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["sunday.com"]
+  resources: ["etherealpods", "etherealpods/status"]
+  verbs: ["get", "list", "watch", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: etherealpod-controller-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: sunday-app
+roleRef:
+  kind: ClusterRole
+  name: etherealpod-controller-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ethereal-controller
+  namespace: sunday-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ethereal-controller
+  template:
+    metadata:
+      labels:
+        app: ethereal-controller
+    spec:
+      containers:
+      - name: controller
+        image: ethereal-controller:v1
+        imagePullPolicy: Never
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -70,8 +115,6 @@ spec:
       containers:
       - name: postgres
         image: postgres:15
-        ports:
-        - containerPort: 5432
         env:
         - name: POSTGRES_PASSWORD
           valueFrom:
@@ -98,19 +141,25 @@ metadata:
 spec:
   type: NodePort 
   selector:
-    app: ethereal-backend
+    app: backend-ep
   ports:
     - port: 8080    
       targetPort: 3000 
       nodePort: 30001
 ---
-apiVersion: sunday.com/v1
-kind: EtherealPod
+apiVersion: v1
+kind: Service
 metadata:
-  name: ethereal-pod
+  name: frontend-svc
   namespace: sunday-app
 spec:
-  image: "sunday-backend:v1.5"
+  type: NodePort
+  selector:
+    app: frontend-ep
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30002
 ---
 apiVersion: sunday.com/v1
 kind: EtherealPod
@@ -127,17 +176,3 @@ metadata:
   namespace: sunday-app
 spec:
   image: "sunday-frontend:v1.0"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend-svc
-  namespace: sunday-app
-spec:
-  type: NodePort
-  selector:
-    managed-by: frontend-ep 
-  ports:
-    - port: 80
-      targetPort: 80
-      nodePort: 30002
