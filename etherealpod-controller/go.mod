@@ -1,4 +1,4 @@
-module sundayapp
+module sundayapp/etherealpod-controller
 
 go 1.24.0
 
