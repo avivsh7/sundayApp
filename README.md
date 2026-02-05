@@ -12,16 +12,14 @@ Node.js and npm (for the frontend).
 
 Git Bash (to run the setup script on Windows).
 
-Quick Start
+Quick Start:
 Clone the repository and navigate to the root folder.
 
-Run the automated setup script:
-
 Open Git Bash Terminal
-
-Type and enter:
+Run the automated setup script:
 sh requirements.sh
-This script cleans old processes on port 5173, builds the backend image, applies Kubernetes manifests, and launches the Controller and Frontend in separate processes.
+
+This script creates Kubernetes namespace and secret, builds the Docker images for all components, applies Kubernetes manifests and starts port-forwarding for local access.
 
 Architecture Decisions
 1. Custom Operator (EtherealPod)
@@ -47,5 +45,3 @@ Secrets Management: Sensitive database credentials are not hardcoded but managed
 
 Assumptions and Notes
 Environment: The solution is designed for local development using Docker Desktop's Kubernetes cluster.
-
-Port Management: The startup script automatically manages and clears ports 30001 and 30002 to ensure a clean deployment.
